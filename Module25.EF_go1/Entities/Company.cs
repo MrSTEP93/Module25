@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Module25.EF_go1
+namespace Module25.EF_go1.Entities
 {
-    public class User
+    public class Company
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string? Email { get; set; }
-        public string Role { get; set; }
+
+        public List<User> Users { get; set; } = new List<User>();
     }
 }

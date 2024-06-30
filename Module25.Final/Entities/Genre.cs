@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Module25.Final
+namespace Module25.Final.Entities
 {
-    public class Client
+    public class Genre
     {
         public int Id { get; set; }
+
         public string Name { get; set; }
-        public string Surname { get; set; }
-        public string Email { get; set; }
+
+        public List<Book> Books { get; set; }
     }
 }
