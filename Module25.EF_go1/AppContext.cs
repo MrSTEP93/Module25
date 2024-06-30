@@ -18,7 +18,7 @@ namespace Module25.EF_go1
         public DbSet<Company> Companies { get; set; }
 
         // Объекты таблицы UserCredentials
-        public DbSet<UserCredential> UserCredentials { get; set; }
+        //public DbSet<UserCredential> UserCredentials { get; set; }
 
         public AppContext()
         {

@@ -19,6 +19,6 @@ namespace Module25.EF_go1.Entities
         // Навигационное свойство
         public Company Company { get; set; }
 
-        public UserCredential UserCredential { get; set; }
+        //public UserCredential UserCredential { get; set; }
     }
 }

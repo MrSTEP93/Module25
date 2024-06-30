@@ -26,11 +26,6 @@ namespace Module25.Final.Repositories
             return db.Books.FirstOrDefault(book => book.Id == id);
         }
 
-        public List<Book> GetBooks()
-        {
-            return db.Books.ToList();
-        }
-
         public void AddBook(Book newBook)
         {
             db.Books.Add(newBook);
@@ -43,11 +38,51 @@ namespace Module25.Final.Repositories
             Save();
         }
 
+        public List<Book> GetBooks()
+        {
+            return db.Books.ToList();
+        }
+
+        public List<Book> GetBooksByAlphabet()
+        {
+            return db.Books.OrderBy(b => b.Name).ToList();
+        }
+
+        public List<Book> GetBooksByYearDesc()
+        {
+            return db.Books.OrderByDescending(b => b.Year).ToList();
+        }
+
         public void ChangeBookYear(int id, short newYear)
         {
             var changedBook = GetBookById(id);
             changedBook.Year = newYear;
             Save();
+        }
+
+        public List<Book> GetBooksWithGenreAndYears(Genre genre, short startYear, short endYear)
+        {
+            return db.Books.Where(b => (b.Year >= startYear) && (b.Year <= endYear) && b.Genres.Contains(genre)).ToList();
+        }
+
+        public int GetCountBooksOfAuthor(string author)
+        {
+            return db.Books.Count(b => b.Author == author);
+        }
+
+        public int GetCountBooksOfGenre(Genre genre)
+        {
+            return db.Books.Count(b => b.Genres.Contains(genre));
+        }
+
+        public bool GetFlagOfAuthorAndName(string author, string bookName)
+        {
+            return db.Books.Any(b => (b.Author == author) && (b.Name == bookName));
+        }
+
+        public Book GetLatestBook()
+        {
+            return db.Books.OrderByDescending(b => b.Year).FirstOrDefault();
         }
     }
 }

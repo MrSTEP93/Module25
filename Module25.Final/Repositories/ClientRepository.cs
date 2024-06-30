@@ -49,5 +49,15 @@ namespace Module25.Final.Repositories
             updatedCli.Name = newName;
             Save();
         }
+
+        public bool GetFlagIfClientHasBook(Client client, Book book)
+        {
+            return db.Clients.Where(c => c == client).Any(c => c.Books.Contains(book));
+        }
+
+        public int GetCountOfBooksHasClient(Client client)
+        {
+            return db.Clients.Where(c => c == client).Select(c => c.Books).Count();
+        }
     }
 }

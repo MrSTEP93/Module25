@@ -8,6 +8,7 @@ namespace Module25.EF_go1.Entities
 {
     public class UserCredential
     {
+        /*
         public int Id { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
@@ -16,6 +17,6 @@ namespace Module25.EF_go1.Entities
         public int UserId { get; set; }
         // Навигационное свойство
         public User User { get; set; }
-
+        */
     }
 }
