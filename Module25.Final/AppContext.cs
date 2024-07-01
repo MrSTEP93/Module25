@@ -18,7 +18,13 @@ namespace Module25.Final
 
         public AppContext()
         {
-            //Database.EnsureDeleted();
+            Database.EnsureCreated();
+        }
+
+        public AppContext(bool needToDeleteDB)
+        {
+            if (needToDeleteDB)
+                Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 

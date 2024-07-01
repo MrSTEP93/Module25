@@ -21,18 +21,19 @@ namespace Module25.Final.Repositories
             db.SaveChanges();
         }
 
-        public Client GetClientById(int id)
-        {
-            return db.Clients.FirstOrDefault(cli => cli.Id == id);
-        }
-
         public List<Client> GetClients()
         {
             return db.Clients.ToList();
         }
 
-        public void AddBook(Client newClient)
+        public Client GetClientById(int id)
         {
+            return db.Clients.FirstOrDefault(cli => cli.Id == id);
+        }
+
+        public void AddClient(Client newClient)
+        {
+            newClient.Books ??= new List<Book>();
             db.Clients.Add(newClient);
             Save();
         }
@@ -47,6 +48,7 @@ namespace Module25.Final.Repositories
         {
             var updatedCli = GetClientById(id);
             updatedCli.Name = newName;
+            db.Clients.Update(updatedCli);
             Save();
         }
 
@@ -57,7 +59,10 @@ namespace Module25.Final.Repositories
 
         public int GetCountOfBooksHasClient(Client client)
         {
-            return db.Clients.Where(c => c == client).Select(c => c.Books).Count();
+            var cliList = db.Clients.ToList();
+            var cli = cliList.FirstOrDefault(c => c == client);
+            return cli.Books.Count;
+            // return db.Clients.Where(c => c == client).Select(c => c.Books).Count();
         }
     }
 }
