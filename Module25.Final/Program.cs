@@ -1,4 +1,5 @@
 ﻿using Module25.Final.Entities;
+using Module25.Final.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,20 +13,27 @@ namespace Module25.Final
         {
             Console.WriteLine("Welcome to digital library!");
             Console.WriteLine("Connecting to db...");
-            using (var db = new AppContext())
+            using (var db = new AppContext(needToDeleteDB: true))
             {
                 Console.WriteLine("Connected successfuly!");
-                //FillData2(db);
-                //FillBookClient(db);
+                
+                FillData1(db);
+                FillData2(db);
+                
+                FillBooksWithClient(db);
+                
+                var rep = new ClientRepository(db);
+                var cli = rep.GetClientById(8);
+                var booksCount = rep.GetCountOfBooksHasClient(cli);
             };
-
-            /*
-            Console.WriteLine("Error: " + ex.Message);
-            Console.WriteLine("\t" + ex.InnerException?.Message);
-            */
         }
 
-        public static void FillData(AppContext db)
+        /// <summary>
+        /// Заполняю первую часть данных 
+        /// (несколько клиентов разными путями, жанры книг, пару самих книг)
+        /// </summary>
+        /// <param name="db"></param>
+        public static void FillData1(AppContext db)
         {
             Console.WriteLine("Filling db...");
             var user1 = new Client { Name = "Arthur", Email = "archi@ya.ru" };
@@ -57,28 +65,31 @@ namespace Module25.Final
                 new() { Name = "Mikhailo", Surname = "Titov", Email = "titMix@ya.ru" }  // 2
             };
 
-            books[0].Client = user1;
-            books[1].Client = user2;
+            books[0].Client = user2;
+            books[1].Client = user1;
 
             db.Clients.AddRange(clients);
             db.Genres.AddRange(genres);
             db.Books.AddRange(books);
             db.SaveChanges();
-            // genres.FirstOrDefault(g => g.Name == "Drama")
         }
 
+        /// <summary>
+        /// Добавляю еще несколько книг и клиентов
+        /// </summary>
+        /// <param name="db"></param>
         public static void FillData2(AppContext db)
         {
             Console.WriteLine("Filling (2) db...");
 
-            var genres = db.Genres.ToList();  // и тут тоже
+            var genres = db.Genres.ToList();  // в бд id начинаются с 1, но после выборке в программе опять с 0
 
             var books = new List<Book>()
             {
                 new() { Name = "Compilation of comedy novels by Zoschenko", Author = "Zoschenko", Year = 1963, Genres = new() { genres[1] } },
                 new() { Name = "Essays on the history of Russia", Author = "N. Doronina", Year = 2022, Genres = new() { genres[3] } },
-                new() { Name = "Valley of Storks", Author = "Ion Druce", Year = 1923, Genres = new() { genres[5], genres[0] } },
-                new() { Name = "Vertinskiy and Ladies", Author = "A. Vertinskiy", Year = 1986, Genres = new() { genres[5], genres[2] } },
+                new() { Name = "Kasa Mare", Author = "Ion Druta", Year = 1965, Genres = new() { genres[5], genres[0] } },
+                new() { Name = "Vertinskiy and Ladies", Author = "A. Vertinskiy", Year = 1991, Genres = new() { genres[5], genres[2] } },
             };
             db.Books.AddRange(books);
             db.SaveChanges();
@@ -94,8 +105,13 @@ namespace Module25.Final
             // genres.FirstOrDefault(g => g.Name == "Drama")
         }
 
-        public static void FillBookClient(AppContext db)
+        /// <summary>
+        /// А здесь начинаю присваивать книгам пользователей (выдавать книги на руки)
+        /// </summary>
+        /// <param name="db"></param>
+        public static void FillBooksWithClient(AppContext db)
         {
+            Console.WriteLine("Transfer books to clients");
             var books = db.Books.ToList();
             var clients = db.Clients.ToList();
 
@@ -105,10 +121,15 @@ namespace Module25.Final
             books[0].Client = clients[6];
             books[1].Client = clients[1];
             books[2].Client = clients[7];
-            books[3].Client = clients[7];
+            //db.SaveChanges();
+            //books[3].Client = clients[7];
+            //var books7 = clients[7].Books.ToList();
+            clients[7].Books.Add(books[3]);
             books[4].Client = clients[5];
 
             db.SaveChanges();
+
+            /// и вроде бы всё в порядке, 
         }
     }
 }
