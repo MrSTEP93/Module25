@@ -2,6 +2,7 @@
 using Module25.Final.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading;
 
@@ -13,13 +14,11 @@ namespace Module25.Final
         {
             Console.WriteLine("Welcome to digital library!");
             Console.WriteLine("Connecting to db...");
-            using (var db = new AppContext(needToDeleteDB: false))
+            using (var db = new AppContext(needToDeleteDB: true))
             {
                 Console.WriteLine("Connected successfuly!");
-                
                 FillData1(db);
                 FillData2(db);
-                
                 FillBooksWithClient(db);
                 
                 var rep = new ClientRepository(db);
@@ -115,21 +114,12 @@ namespace Module25.Final
             var books = db.Books.ToList();
             var clients = db.Clients.ToList();
 
-            var b = books.Select(b => b.Name);
-            var c = clients.Select(c => c.Name + c.Surname);
-
             books[0].Client = clients[6];
             books[1].Client = clients[1];
             books[2].Client = clients[7];
-            //db.SaveChanges();
-            //books[3].Client = clients[7];
-            //var books7 = clients[7].Books.ToList();
             clients[7].Books.Add(books[3]);
             books[4].Client = clients[5];
-
             db.SaveChanges();
-
-            /// и вроде бы всё в порядке, 
         }
     }
 }

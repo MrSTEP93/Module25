@@ -64,7 +64,15 @@ namespace Module25.Final.Tests
             var count = rep.GetCountOfBooksHasClient(cli);
             Assert.AreEqual(2, count);
         }
-    
+
+        [Test]
+        public void GetCountOfBooksHasClientIDMustReturnsCorrentCount()
+        {
+            var rep = new ClientRepository(db);
+            var count = rep.GetCountOfBooksHasClient(8);
+            Assert.AreEqual(2, count);
+        }
+
         /*
         [Test]
         public void GetClientsMustReturnsCorrentCount()

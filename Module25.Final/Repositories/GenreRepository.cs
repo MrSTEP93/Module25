@@ -43,10 +43,10 @@ namespace Module25.Final.Repositories
             Save();
         }
 
-        public void ChangeGenreYear(int id, short newYear)
+        public void UpdateGenreName(int id, string newName)
         {
             var changedGenre = GetGenreById(id);
-            //changedGenre.Year = newYear;
+            changedGenre.Name = newName;
             Save();
         }
     }

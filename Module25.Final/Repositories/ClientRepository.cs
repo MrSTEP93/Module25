@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Module25.Final.Entities;
 
 namespace Module25.Final.Repositories
@@ -28,12 +29,14 @@ namespace Module25.Final.Repositories
 
         public Client GetClientById(int id)
         {
-            return db.Clients.FirstOrDefault(cli => cli.Id == id);
+            //var list = db.Clients;
+            //return list.Include(cli => cli.Books).FirstOrDefault(cli => cli.Id == id);
+            return db.Clients.Include(cli => cli.Books).FirstOrDefault(cli => cli.Id == id);
         }
 
         public void AddClient(Client newClient)
         {
-            newClient.Books ??= new List<Book>();
+            //newClient.Books ??= new List<Book>();
             db.Clients.Add(newClient);
             Save();
         }
@@ -59,10 +62,12 @@ namespace Module25.Final.Repositories
 
         public int GetCountOfBooksHasClient(Client client)
         {
-            var cliList = db.Clients.ToList();
-            var cli = cliList.FirstOrDefault(c => c == client);
-            return cli.Books.Count;
-            // return db.Clients.Where(c => c == client).Select(c => c.Books).Count();
+            return db.Clients.Include(cli => cli.Books).FirstOrDefault(c => c == client).Books.Count;
+        }
+
+        public int GetCountOfBooksHasClient(int id)
+        {
+            return db.Clients.Include(cli => cli.Books).FirstOrDefault(c => c.Id == id).Books.Count;
         }
     }
 }

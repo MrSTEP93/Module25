@@ -15,7 +15,7 @@ namespace Module25.Final.Tests
         public void GetBookByIdMustRerurnCurrentValue()
         {
             var rep = new BookRepository(db);
-            var book = rep.GetBookById(5);
+            var book = rep.GetBookById(4);
             Assert.AreEqual("Kasa Mare", book.Name);
         }
 
