@@ -20,10 +20,7 @@ namespace Module25.Final
                 FillData1(db);
                 FillData2(db);
                 FillBooksWithClient(db);
-                
-                var rep = new ClientRepository(db);
-                var cli = rep.GetClientById(8);
-                var booksCount = rep.GetCountOfBooksHasClient(cli);
+
             };
         }
 
