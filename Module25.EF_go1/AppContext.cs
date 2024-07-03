@@ -22,7 +22,13 @@ namespace Module25.EF_go1
 
         public AppContext()
         {
-            Database.EnsureDeleted();
+            //Database.EnsureDeleted();
+            Database.EnsureCreated();
+        }
+
+        public AppContext(DbContextOptions options)
+        {
+            //Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
@@ -30,6 +36,7 @@ namespace Module25.EF_go1
         {
             string connectionString = File.ReadAllText("connString.txt");
             optionsBuilder.UseSqlServer(connectionString);
+            //optionsBuilder.UseSqlServer("");
         }
     }
 }
